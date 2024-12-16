@@ -11,158 +11,173 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet" />
+    <!DOCTYPE html>
     <style>
-        body {
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
             font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        /* Fullscreen map container */
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 0; /* Below the content */
+        }
+
+        /* Overlay container for clocks and text */
+        .overlay {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            padding: 1rem;
-            box-sizing: border-box;
+            height: 100%;
+            color: #fff;
+            text-align: center;
+            pointer-events: none; /* Prevents map blocking */
         }
 
         h1 {
             font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            margin: 0 1rem 1.5rem;
             line-height: 1.2;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
         }
 
         #headline span {
-            color: #53a796;
+            color: #f18851;
         }
 
         #headline span.baba {
-            color: #f18851;
+            color: #53a796;
         }
 
         .clocks {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            width: 100%;
-            max-width: 600px;
+            flex-direction: column; /* Default to stacking on small screens */
+            gap: 1rem;
+            max-width: 400px;
+        }
+
+        /* Prevent stacking on desktop */
+        @media (min-width: 768px) {
+            .clocks {
+                flex-direction: row; /* Side-by-side layout for larger screens */
+                justify-content: center;
+                gap: 2rem;
+                max-width: 100%; /* Allow clocks to spread out */
+            }
+
+            .clock-container {
+                width: 250px; /* Ensures uniform clock widths */
+            }
         }
 
         .clock-container {
-            text-align: center;
-            padding: 2rem;
-            background: #fff;
-            border: 2px solid;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 2px solid #fff;
+        }
+
+        #la-clock-container {
+            border-color: #53a796;
+        }
+
+        #taipei-clock-container {
+            border-color: #f18851;
         }
 
         .clock {
             font-size: 2.5rem;
             font-weight: bold;
-            margin-top: 0.5rem;
-            color: #333;
-        }
-
-        #la-clock-container {
-            border-color: #f18851;
-        }
-
-        #taipei-clock-container {
-            border-color: #53a796;
         }
 
         .subhead {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
-            color: #555;
+            color: #fff;
         }
+
         .credits {
             position: absolute;
             bottom: 10px;
             width: 100%;
             text-align: center;
-            font-weight: 300;
-            font-size: 1rem;
-            color: #a8a8a8;
-            margin: 0;
+            font-size: 0.9rem;
+            color: #767575;
+            /* background: rgba(0, 0, 0, 0.6); */
+            padding: 0.5rem 0;
         }
 
         .credits a {
             color: #53a796;
             text-decoration: none;
-            font-weight: 500;
-        }
-
-        .credits a:hover {
-            text-decoration: underline;
-            color: #53a796;
-            font-weight: 500;
-        }
-
-        @media (min-width: 768px) {
-            .clocks {
-                flex-direction: row;
-                justify-content: center;
-                gap: 2rem;
-            }
-
-            h1 {
-                font-size: 3rem;
-                margin-bottom: 2rem;
-            }
         }
     </style>
+</head>
+<body>
+    <!-- Fullscreen Map Container -->
+    <div id="map"></div>
+
+    <!-- Overlay Content -->
+    <div class="overlay">
+        <h1 id="headline">What time is it for <span class="baba">Baba</span>?</h1>
+        <div class="clocks">
+            <div class="clock-container" id="taipei-clock-container">
+                <div class="subhead">Taipei</div>
+                <div class="clock" id="taipei-clock">Loading...</div>
+            </div>
+            <div class="clock-container" id="la-clock-container">
+                <div class="subhead">Los Angeles</div>
+                <div class="clock" id="la-clock">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credits -->
+    <p class="credits">A Hu-Stiles production | <a href="https://github.com/stiles/our-time">About</a></p>
+
     <script>
-        // Helper function to format time in "hh:mm am/pm" format
+        // Initialize Mapbox
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic3RpbGVzIiwiYSI6ImNsd3Rpc3V2aTAzeXUydm9sMHdoN210b2oifQ.66AJmPYxe2ixku1o7Rwdlg';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/stiles/cm4rd1ivk007w01su0ro8c9rm',
+            center: [-175.03, 21.4],
+            zoom: 2
+        });
+
+        // Update Clocks
         function formatTime(date) {
             const hours = date.getHours();
             const minutes = date.getMinutes();
             const ampm = hours >= 12 ? 'pm' : 'am';
-            const formattedHours = hours % 12 || 12;
-            const formattedMinutes = minutes.toString().padStart(2, '0');
-            return `${formattedHours}:${formattedMinutes} ${ampm}`;
+            return `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
         }
 
-        // Function to update clocks and headline
         function updateClocks() {
             const headline = document.getElementById('headline');
             const names = ['<span class="baba">Baba</span>', '<span>Eva, Isa & Luna</span>'];
-            const currentName = names[Math.floor(Date.now() / 5000) % names.length];
-            headline.innerHTML = `What time is it for ${currentName}?`;
-
-            const losAngelesClock = document.getElementById('la-clock');
-            const taipeiClock = document.getElementById('taipei-clock');
+            headline.innerHTML = `What time is it for ${names[Math.floor(Date.now() / 5000) % names.length]}?`;
 
             const now = new Date();
-
-            const losAngelesTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
-            const taipeiTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
-
-            losAngelesClock.textContent = formatTime(losAngelesTime);
-            taipeiClock.textContent = formatTime(taipeiTime);
+            document.getElementById('la-clock').textContent = formatTime(new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })));
+            document.getElementById('taipei-clock').textContent = formatTime(new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' })));
         }
 
-        // Update clocks every second
         setInterval(updateClocks, 1000);
-    </script>
-</head>
-<body>
-    <h1 id="headline">What time is it for <span class="baba">Baba</span>?</h1>
-    <div class="clocks">
-        <div class="clock-container" id="la-clock-container">
-            <div class="subhead">Los Angeles</div>
-            <div class="clock" id="la-clock">Loading...</div>
-        </div>
-        <div class="clock-container" id="taipei-clock-container">
-            <div class="subhead">Taipei</div>
-            <div class="clock" id="taipei-clock">Loading...</div>
-        </div>
-    </div>
-    <p class="credits">A Hu-Stiles production | <a href="https://github.com/stiles/our-time">About</a></p>
-    <script>
-        // Initial clock update
         updateClocks();
     </script>
 </body>
