@@ -1,7 +1,6 @@
 # Dual time zone clock
-### Keep track of loved ones overseas
 
-This simple web app helps you keep track of time for friends or family in another country. It displays two clocks side-by-side (or stacked on mobile) showing the current time in **Los Angeles** and **Taipei**.
+This simple web app helps you keep track of time in another country. It displays two clocks side-by-side (or stacked on mobile) showing the current time in **Los Angeles** and **Taipei**.
 
 ## Features
 - 📅 **Live updates**: The clocks automatically update every second.
@@ -16,9 +15,12 @@ This simple web app helps you keep track of time for friends or family in anothe
    git clone <repo-url>
    ```
 2. **Open the HTML file**:
-   Open the `index.html` file in any modern web browser.
+   - Open the `index.html` file in any modern web browser.
 
-3. **Deploy**:
+3. **Mapbox**: 
+   - Style a Mapbox base layer with your desired configuration. 
+
+4. **Deploy**:
    - You can host this page using [GitHub Pages](https://pages.github.com/) or any other static hosting service.
 
 ## Customization
@@ -28,7 +30,7 @@ This simple web app helps you keep track of time for friends or family in anothe
 ## Technologies
 - **HTML5** for structure
 - **CSS3** for styling and responsiveness
-- **Vanilla JavaScript** for real-time clock updates
+- **JavaScript** for real-time clock updates
 
 ## Screenshots
 ![Example Screenshot](images/screenshot_desktop.png)
