@@ -30,8 +30,8 @@ This simple web app helps you keep track of time for friends or family in anothe
 - **Vanilla JavaScript** for real-time clock updates
 
 ## Screenshots
-![Example Screenshot](screenshot_mobile.png)
-![Example Screenshot](screenshot_desktop.png)
+![Example Screenshot](images/screenshot_mobile.png)
+![Example Screenshot](images/screenshot_desktop.png)
 
 ## Credits
 Created to help families stay connected across time zones. ❤️

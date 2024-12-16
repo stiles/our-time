@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hu-Stiles Time?</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
@@ -74,6 +78,28 @@
             margin-bottom: 0.5rem;
             color: #555;
         }
+        .credits {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-weight: 300;
+            font-size: 1rem;
+            color: #a8a8a8;
+            margin: 0;
+        }
+
+        .credits a {
+            color: #53a796;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .credits a:hover {
+            text-decoration: underline;
+            color: #53a796;
+            font-weight: 500;
+        }
 
         @media (min-width: 768px) {
             .clocks {
@@ -134,6 +160,7 @@
             <div class="clock" id="taipei-clock">Loading...</div>
         </div>
     </div>
+    <p class="credits">A Hu-Stiles production | <a href="https://github.com/stiles/our-time">About</a></p>
     <script>
         // Initial clock update
         updateClocks();
