@@ -5,7 +5,7 @@ This simple web app helps you keep track of time in another country. It displays
 ## Features
 - 📅 **Live updates**: The clocks automatically update every second.
 - 🏠 **Local and remote times**: Displays time for Los Angeles and Taipei — or anywhere — regardless of the user's location.
-- 🎨 **Responsive design**: Clocks adapt to look great on both mobile and desktop screens.
+- 🎨 **Responsive design**: Clocks adapt to render properly on mobile and desktop screens.
 - 🔄 **Dynamic headline**: The headline alternates names like "Baba" and "Eva, Isa & Luna" to personalize the experience.
 - 🗺️ **Mapbox background:**: Adds a monocrome base layer of the globe that highlights Los Angeles and Taiwan. 
 
