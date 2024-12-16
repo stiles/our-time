@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hu-Stiles Time?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        #headline span {
+            color: #53a796;
+        }
+
+        #headline span.baba {
+            color: #f18851;
+        }
+
+        .clocks {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .clock-container {
+            text-align: center;
+            padding: 1rem;
+            background: #fff;
+            border: 2px solid;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .clock {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            color: #333;
+        }
+
+        #la-clock-container {
+            border-color: #f18851;
+        }
+
+        #taipei-clock-container {
+            border-color: #53a796;
+        }
+
+        .subhead {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        @media (min-width: 768px) {
+            .clocks {
+                flex-direction: row;
+                justify-content: center;
+                gap: 2rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+    <script>
+        // Helper function to format time in "hh:mm am/pm" format
+        function formatTime(date) {
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'pm' : 'am';
+            const formattedHours = hours % 12 || 12;
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            return `${formattedHours}:${formattedMinutes} ${ampm}`;
+        }
+
+        // Function to update clocks and headline
+        function updateClocks() {
+            const headline = document.getElementById('headline');
+            const names = ['<span class="baba">Baba</span>', '<span>Eva, Isa & Luna</span>'];
+            const currentName = names[Math.floor(Date.now() / 5000) % names.length];
+            headline.innerHTML = `What time is it for ${currentName}?`;
+
+            const losAngelesClock = document.getElementById('la-clock');
+            const taipeiClock = document.getElementById('taipei-clock');
+
+            const now = new Date();
+
+            const losAngelesTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+            const taipeiTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
+
+            losAngelesClock.textContent = formatTime(losAngelesTime);
+            taipeiClock.textContent = formatTime(taipeiTime);
+        }
+
+        // Update clocks every second
+        setInterval(updateClocks, 1000);
+    </script>
+</head>
+<body>
+    <h1 id="headline">What time is it for <span class="baba">Baba</span>?</h1>
+    <div class="clocks">
+        <div class="clock-container" id="la-clock-container">
+            <div class="subhead">Los Angeles</div>
+            <div class="clock" id="la-clock">Loading...</div>
+        </div>
+        <div class="clock-container" id="taipei-clock-container">
+            <div class="subhead">Taipei</div>
+            <div class="clock" id="taipei-clock">Loading...</div>
+        </div>
+    </div>
+    <script>
+        // Initial clock update
+        updateClocks();
+    </script>
+</body>
+</html>
