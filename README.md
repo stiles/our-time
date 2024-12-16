@@ -1,6 +1,6 @@
 # Dual time zone clock
 
-This simple web app helps you keep track of time in another country. It displays two clocks side-by-side (or stacked on mobile) showing the current time in **Los Angeles** and **Taipei**.
+This simple web app helps you keep track of time in another country. It displays two clocks side-by-side (or stacked on mobile) showing the current time in **Los Angeles** and **Taipei**. It's deployed here: [https://mattstiles.me/our-time/](https://mattstiles.me/our-time/). 
 
 ## Features
 - 📅 **Live updates**: The clocks automatically change, updating every second.
