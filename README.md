@@ -8,6 +8,7 @@ This simple web app helps you keep track of time for friends or family in anothe
 - 🏠 **Local and remote times**: Displays time for Los Angeles and Taipei — or anywhere — regardless of the user's location.
 - 🎨 **Responsive design**: Clocks adapt to look great on both mobile and desktop screens.
 - 🔄 **Dynamic headline**: The headline alternates names like "Baba" and "Eva, Isa & Luna" to personalize the experience.
+- 🗺️ **Mapbox background:**: Adds a monocrome base layer of the globe that highlights Los Angeles and Taiwan. 
 
 ## How to Use
 1. **Clone the repository**:
@@ -30,7 +31,6 @@ This simple web app helps you keep track of time for friends or family in anothe
 - **Vanilla JavaScript** for real-time clock updates
 
 ## Screenshots
-![Example Screenshot](images/screenshot_mobile.png)
 ![Example Screenshot](images/screenshot_desktop.png)
 
 ## Credits
