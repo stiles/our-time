@@ -46,7 +46,7 @@
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin: 0 1rem 1.5rem;
             line-height: 1.2;
             /* background: rgba(0, 0, 0, 0.5); */
@@ -80,7 +80,7 @@
             }
 
             .clock-container {
-                width: 200px; /* Ensures uniform clock widths */
+                width: 150px; /* Ensures uniform clock widths */
             }
         }
 
@@ -102,7 +102,7 @@
         }
 
         .clock {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
         }
 
@@ -127,6 +127,23 @@
             color: #53a796;
             text-decoration: none;
         }
+
+        .day {
+            font-size: 1rem;
+            margin-top: 0.2rem;
+            color: #444;
+            font-weight: 300;
+        }
+
+        .blink {
+            animation: blink 1s steps(1, start) infinite;
+        }
+
+        @keyframes blink {
+            10% {
+                opacity: .5;
+            }
+        }
     </style>
 </head>
 <body>
@@ -140,10 +157,12 @@
             <div class="clock-container" id="taipei-clock-container">
                 <div class="subhead">Taipei</div>
                 <div class="clock" id="taipei-clock">Loading...</div>
+                <div class="day" id="taipei-day">Loading...</div>
             </div>
             <div class="clock-container" id="la-clock-container">
                 <div class="subhead">Los Angeles</div>
                 <div class="clock" id="la-clock">Loading...</div>
+                <div class="day" id="la-day">Loading...</div>
             </div>
         </div>
     </div>
@@ -171,10 +190,10 @@
 
         // Update Clocks
         function formatTime(date) {
-            const hours = date.getHours();
-            const minutes = date.getMinutes();
-            const ampm = hours >= 12 ? 'pm' : 'am';
-            return `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+            const hours = date.getHours() % 12 || 12;
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            const ampm = date.getHours() >= 12 ? 'pm' : 'am';
+            return { hours, minutes, ampm }; // Return as an object
         }
 
         function updateClocks() {
@@ -183,8 +202,20 @@
             headline.innerHTML = `What time is it for ${names[Math.floor(Date.now() / 5000) % names.length]}?`;
 
             const now = new Date();
-            document.getElementById('la-clock').textContent = formatTime(new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })));
-            document.getElementById('taipei-clock').textContent = formatTime(new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' })));
+
+            // Los Angeles
+            const laTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+            const laFormatted = formatTime(laTime);
+            document.getElementById('la-clock').innerHTML = 
+                `${laFormatted.hours}<span class="blink">:</span>${laFormatted.minutes} ${laFormatted.ampm}`;
+            document.getElementById('la-day').textContent = laTime.toLocaleString('en-US', { weekday: 'long' });
+
+            // Taipei
+            const taipeiTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
+            const taipeiFormatted = formatTime(taipeiTime);
+            document.getElementById('taipei-clock').innerHTML = 
+                `${taipeiFormatted.hours}<span class="blink">:</span>${taipeiFormatted.minutes} ${taipeiFormatted.ampm}`;
+            document.getElementById('taipei-day').textContent = taipeiTime.toLocaleString('en-US', { weekday: 'long' });
         }
 
         setInterval(updateClocks, 1000);
