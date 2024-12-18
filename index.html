@@ -195,10 +195,10 @@
             <div class="subhead"><em>Survivor</em> finale:</div>
             <div class="countdown" id="survivor-timer">Loading...</div>
         </div>
-        <div class="countdown-container">
+        <!-- <div class="countdown-container">
             <div class="subhead">Landing in LA:</div>
             <div class="countdown" id="countdown-timer">Loading...</div>
-        </div>
+        </div> -->
         
     </div>
 
@@ -216,12 +216,102 @@
             interactive: false // Disable all map interactions
         });
 
+        map.on('load', () => {
+            // Step 1: Add a custom plane icon
+            map.loadImage('images/plane_icon.png', (error, image) => {
+                if (error) throw error;
+
+                map.addImage('plane-icon', image);
+
+                // Step 2: Add a GeoJSON source for the plane position
+                map.addSource('plane-point', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [
+                            {
+                                'type': 'Feature',
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': [179.9, 54.4] // Adjust to the midpoint near the Date Line
+                                },
+                                'properties': {
+                                    'title': 'China Airlines flight CI7'
+                                }
+                            }
+                        ]
+                    }
+                });
+
+                // Step 3: Add a layer to display the plane icon and title
+                map.addLayer({
+                    'id': 'plane-layer',
+                    'type': 'symbol',
+                    'source': 'plane-point',
+                    'layout': {
+                        'icon-image': 'plane-icon', // Custom plane icon
+                        'icon-size': 0.1, // Adjust the size of the icon
+                        'icon-rotate': 359, // Adjust the rotation for plane direction
+                        'icon-allow-overlap': true,
+                        // Add the title below the plane icon
+                        'text-field': ['get', 'title'], // Use 'title' property
+                        'text-font': ['Open Sans Regular', 'Arial Unicode MS Bold'],
+                        'text-size': 10, // Text size
+                        'text-offset': [0, 3], // Offset to position below the icon
+                        'text-anchor': 'top' // Anchor text below the plane
+                    },
+                    'paint': {
+                        'text-color': '#000000', // Black text color
+                        'text-halo-color': '#FFFFFF', // White outline for readability
+                        'text-halo-width': 1
+                    }
+                });
+            });
+
+            // Add Leg 1 source and layer
+            map.addSource('flight-path-leg1', {
+                'type': 'geojson',
+                'data': './data/flight_path_leg1.geojson' // Replace with your correct path
+            });
+
+            map.addLayer({
+                'id': 'flight-path-leg1-layer',
+                'type': 'line',
+                'source': 'flight-path-leg1',
+                'layout': {},
+                'paint': {
+                    'line-color': '#555555', // Black color
+                    'line-width': 1.5,       // Thin line
+                    'line-opacity': 0.8
+                }
+            });
+
+            // Add Leg 2 source and layer
+            map.addSource('flight-path-leg2', {
+                'type': 'geojson',
+                'data': './data/flight_path_leg2.geojson' // Replace with your correct path
+            });
+
+            map.addLayer({
+                'id': 'flight-path-leg2-layer',
+                'type': 'line',
+                'source': 'flight-path-leg2',
+                'layout': {},
+                'paint': {
+                    'line-color': '#555555', // Black color
+                    'line-width': 1.5,       // Thin line
+                    'line-opacity': 0.8
+                }
+            });
+        });
+
         // Disable additional controls for redundancy
         map.scrollZoom.disable();
         map.dragPan.disable();
         map.doubleClickZoom.disable();
         map.keyboard.disable();
         map.touchZoomRotate.disable();
+
 
         // Update Clocks
         function formatTime(date) {
@@ -295,8 +385,8 @@
         }
 
         // Update countdown every second
-        setInterval(updateCountdown, 1000);
-        updateCountdown(); // Initial call
+        // setInterval(updateCountdown, 1000);
+        // updateCountdown(); // Initial call
 
         // Update survivor countdown every second
         setInterval(survivorCountdown, 1000);
