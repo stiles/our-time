@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
-# Step 1: Load the CSV file
+# Load the CSV file
 file_path = "./data/flightaware_flight_path.csv"  # Replace with your file path
 data = pd.read_csv(file_path)
 
-# Step 2: Parse Latitude and Longitude into (lon, lat) order
+# Parse Latitude and Longitude into (lon, lat) order
 data['Coordinates'] = list(zip(data['Longitude'], data['Latitude']))
 
-# Step 3: Handle the Date Line wrap
+# Handle the Int'l Date Line wrap
 def split_at_dateline(coords):
     """Split a list of coordinates at the International Date Line."""
     lines = []
@@ -32,29 +32,25 @@ def split_at_dateline(coords):
         lines.append(LineString(current_line))
     return lines
 
-# Step 4: Split the coordinates into separate lines
+# Split the coordinates into separate lines
 coords = data['Coordinates'].tolist()
 split_lines = split_at_dateline(coords)
-
-# Step 5: Validate and Export Each Line
-print(f"Number of split lines: {len(split_lines)}")
 
 def save_geojson(line, output_path, name):
     """Validate and save LineString to GeoJSON."""
     if line.is_valid and not line.is_empty:
-        print(f"{name} - Valid Geometry Length: {len(line.coords)}")
         gdf = gpd.GeoDataFrame({'geometry': [line]}, crs="EPSG:4326")
         gdf.to_file(output_path, driver="GeoJSON")
         print(f"{name} saved successfully: {output_path}")
     else:
         print(f"{name} is invalid or empty.")
 
-# Save Leg 1 and Leg 2
+# Save legs 1 and 2
 save_geojson(split_lines[0], "./data/flight_path_leg1.geojson", "Leg 1")
 if len(split_lines) > 1:
     save_geojson(split_lines[1], "./data/flight_path_leg2.geojson", "Leg 2")
 
-# Step 6: Plot both legs to verify
+# Plot both legs to verify
 fig, ax = plt.subplots(figsize=(12, 6), subplot_kw={'projection': ccrs.PlateCarree()})
 ax.set_title("Flight Path: LA to Taipei (Split at Date Line)", fontsize=16)
 
