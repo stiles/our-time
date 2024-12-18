@@ -85,11 +85,11 @@
         }
 
         .clock-container {
-            background: rgba(255, 255, 255, .5);
+            background: rgba(255, 255, 255, .4);
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
-            border: 2px solid #fff;
+            border: 3px solid #fff;
             color: #555;
         }
 
@@ -144,6 +144,32 @@
                 opacity: .5;
             }
         }
+        .countdown-container {
+            margin-top: 2rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1rem;
+            border: 1px solid #555;
+            border-radius: 8px;
+            color: #555;
+        }
+
+        .survivor-container {
+            margin-top: 2rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1rem;
+            border: 1px solid #555;
+            border-radius: 8px;
+            color: #555;
+        }
+
+        .countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
     </style>
 </head>
 <body>
@@ -165,6 +191,15 @@
                 <div class="day" id="la-day">Loading...</div>
             </div>
         </div>
+        <div class="countdown-container">
+            <div class="subhead"><em>Survivor</em> finale:</div>
+            <div class="countdown" id="survivor-timer">Loading...</div>
+        </div>
+        <div class="countdown-container">
+            <div class="subhead">Landing in LA:</div>
+            <div class="countdown" id="countdown-timer">Loading...</div>
+        </div>
+        
     </div>
 
     <!-- Credits -->
@@ -198,8 +233,8 @@
 
         function updateClocks() {
             const headline = document.getElementById('headline');
-            const names = ['<span class="baba">Baba</span>', '<span>Eva, Isa & Luna</span>'];
-            headline.innerHTML = `What time is it for ${names[Math.floor(Date.now() / 5000) % names.length]}?`;
+            const names = ['<span class="baba">LA</span>', '<span>Taipei</span>'];
+            headline.innerHTML = `What time is it in ${names[Math.floor(Date.now() / 5000) % names.length]}?`;
 
             const now = new Date();
 
@@ -218,6 +253,56 @@
             document.getElementById('taipei-day').textContent = taipeiTime.toLocaleString('en-US', { weekday: 'long' });
         }
 
+        function updateCountdown() {
+            const targetTime = new Date('December 29, 2024 17:00:00 PST'); // Target date/time
+            const now = new Date();
+
+            const difference = targetTime - now;
+
+            if (difference <= 0) {
+                document.getElementById('countdown-timer').textContent = "You're home!";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown-timer').textContent = 
+                // `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                `${days} days, ${hours} hours`;
+        }
+
+        function survivorCountdown() {
+            const targetTime = new Date('December 18, 2024 20:00:00 PST'); // Target date/time
+            const now = new Date();
+
+            const difference = targetTime - now;
+
+            if (difference <= 0) {
+                document.getElementById('survivor-timer').textContent = "The show is on!";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('survivor-timer').textContent = 
+                `${hours} hours, ${minutes} minutes`;
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+
+        // Update survivor countdown every second
+        setInterval(survivorCountdown, 1000);
+        survivorCountdown(); // Initial call
+
+        // Update clocks
         setInterval(updateClocks, 1000);
         updateClocks();
     </script>
