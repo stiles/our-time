@@ -182,14 +182,14 @@
                 <div class="day" id="la-day">Loading...</div>
             </div>
         </div>
-        <div class="countdown-container">
+        <!-- <div class="countdown-container">
             <div class="subhead"><em>Survivor</em> finale:</div>
             <div class="countdown" id="survivor-timer">Loading...</div>
-        </div>
-        <!-- <div class="countdown-container">
+        </div> -->
+        <div class="countdown-container">
             <div class="subhead">Landing in LA:</div>
             <div class="countdown" id="countdown-timer">Loading...</div>
-        </div> -->
+        </div>
         
     </div>
 
@@ -355,33 +355,9 @@
                 `${days} days, ${hours} hours`;
         }
 
-        function survivorCountdown() {
-            const targetTime = new Date('December 18, 2024 20:00:00 PST'); // Target date/time
-            const now = new Date();
-
-            const difference = targetTime - now;
-
-            if (difference <= 0) {
-                document.getElementById('survivor-timer').textContent = "The show is on!";
-                return;
-            }
-
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            document.getElementById('survivor-timer').textContent = 
-                `${hours} hours, ${minutes} minutes`;
-        }
-
         // Update countdown every second
-        // setInterval(updateCountdown, 1000);
-        // updateCountdown(); // Initial call
-
-        // Update survivor countdown every second
-        setInterval(survivorCountdown, 1000);
-        survivorCountdown(); // Initial call
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
         // Update clocks
         setInterval(updateClocks, 1000);

@@ -8,7 +8,7 @@ This simple web app helps you keep track of time in another country. It displays
 - 🎨 **Responsive design**: Clocks adapt to render properly on both mobile and desktop screens.
 - 🔄 **Dynamic headline**: The headline alternates locations to personalize the experience.
 - 🗺️ **Mapbox integration**: Adds a monocrome base layer of the globe that highlights Los Angeles and Taiwan. The map also features the flight path of the journey that took loved ones out of their normal time zone. 
-- 📺 **Event timing**: Features a countdown to an event — in this case a television show — so you can stay aligned with family on shared experiences. 
+- 📺 **Event timing**: Features a countdown to an event to stay aligned with family on shared experiences. 
 
 ## How to Use
 - **Clone the repository**:
