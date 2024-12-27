@@ -227,7 +227,7 @@
                                     'coordinates': [179.9, 54] // Adjust to the midpoint near the Date Line
                                 },
                                 'properties': {
-                                    'title': 'China Airlines flight CI5'
+                                    'title': 'China Airlines flight CI8'
                                 }
                             }
                         ]
@@ -242,7 +242,7 @@
                     'layout': {
                         'icon-image': 'plane-icon', // Custom plane icon
                         'icon-size': 0.1, // Adjust the size of the icon
-                        'icon-rotate': 359, // Adjust the rotation for plane direction
+                        'icon-rotate': 180, // Adjust the rotation for plane direction
                         'icon-allow-overlap': true,
                         // Add the title below the plane icon
                         'text-field': ['get', 'title'], // Use 'title' property
@@ -335,7 +335,7 @@
         }
 
         function updateCountdown() {
-            const targetTime = new Date('December 29, 2024 17:00:00 PST'); // Target date/time
+            const targetTime = new Date('December 29, 2024 19:35:00 PST');
             const now = new Date();
 
             const difference = targetTime - now;
